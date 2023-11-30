@@ -78,7 +78,6 @@ function matchJson() {
     // Perform matching logic
     matchAndDisplay(file1Data, file2Data);
 }
-
 function matchAndDisplay(file1Data, file2Data) {
     // Your existing matching and display logic
     const matches = [];
@@ -86,7 +85,9 @@ function matchAndDisplay(file1Data, file2Data) {
     for (const entry2 of file2Data) {
         if (entry2.body && entry2.body.targetId) {
             const targetId = entry2.body.targetId;
-            const matchingEntry = file1Data.find(entry1 => entry1.id === targetId);
+
+            // Updated matching logic to handle both structures in file1Data
+            const matchingEntry = file1Data.find(entry1 => entry1.id === targetId || entry1.targetId === targetId);
 
             if (matchingEntry) {
                 const name = matchingEntry.name || 'N/A';
@@ -102,7 +103,6 @@ function matchAndDisplay(file1Data, file2Data) {
     // Display matches as a table
     displayMatches(matches);
 }
-
 function displayMatches(matches) {
     const matchesBody = document.getElementById('matchesBody');
     matchesBody.innerHTML = '';

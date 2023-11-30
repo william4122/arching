@@ -12,19 +12,30 @@
 
     <div>
         <label for="file1">File 1:</label>
-        <input type="file" id="file1" accept=".json">
+        <textarea id="file1" placeholder="Paste your JSON here" rows="10" cols="50"></textarea>
     </div>
 
     <div>
         <label for="file2">File 2:</label>
-        <input type="file" id="file2" accept=".json">
+        <textarea id="file2" placeholder="Paste your JSON here" rows="10" cols="50"></textarea>
     </div>
 
     <!-- Update the onclick to call matchJson -->
     <button onclick="matchJson()">Match JSON</button>
 
     <h2>Matches:</h2>
-    <ul id="matches"></ul>
+    <!-- Display matches as a table -->
+    <table id="matches">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>RelatedID</th>
+                <th>TargetID</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody id="matchesBody"></tbody>
+    </table>
 
     <!-- The rest of your JavaScript code can remain in the HTML file -->
     <script>
@@ -34,31 +45,17 @@ function matchJson() {
     const file1Input = document.getElementById('file1');
     const file2Input = document.getElementById('file2');
 
-    // Check if files are selected
-    if (!file1Input.files[0] || !file2Input.files[0]) {
-        alert('Please select both JSON files');
+    // Check if textareas are not empty
+    if (!file1Input.value.trim() || !file2Input.value.trim()) {
+        alert('Please paste JSON into both boxes');
         return;
     }
 
-    const file1Reader = new FileReader();
-    const file2Reader = new FileReader();
+    const file1Data = JSON.parse(file1Input.value);
+    const file2Data = JSON.parse(file2Input.value);
 
-    // Read file 1
-    file1Reader.onload = function (e) {
-        const file1Data = JSON.parse(e.target.result);
-
-        // Read file 2
-        file2Reader.onload = function (e) {
-            const file2Data = JSON.parse(e.target.result);
-
-            // Perform matching logic
-            matchAndDisplay(file1Data, file2Data);
-        };
-
-        file2Reader.readAsText(file2Input.files[0]);
-    };
-
-    file1Reader.readAsText(file1Input.files[0]);
+    // Perform matching logic
+    matchAndDisplay(file1Data, file2Data);
 }
 
 function matchAndDisplay(file1Data, file2Data) {
@@ -82,25 +79,42 @@ function matchAndDisplay(file1Data, file2Data) {
         }
     }
 
-    // Display matches
+    // Display matches as a table
     displayMatches(matches);
 }
 
 function displayMatches(matches) {
-    const matchesList = document.getElementById('matches');
-    matchesList.innerHTML = '';
+    const matchesBody = document.getElementById('matchesBody');
+    matchesBody.innerHTML = '';
 
     if (matches.length === 0) {
-        matchesList.innerHTML = '<li>No matches found.</li>';
+        const noMatchesRow = document.createElement('tr');
+        const noMatchesCell = document.createElement('td');
+        noMatchesCell.textContent = 'No matches found.';
+        noMatchesCell.colSpan = 4; // Span across all columns
+        noMatchesRow.appendChild(noMatchesCell);
+        matchesBody.appendChild(noMatchesRow);
     } else {
         matches.forEach(match => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Name: ${match.Name}, RelatedID: ${match.RelatedID}, TargetID: ${match.TargetID}, ID: ${match.ID}`;
-            matchesList.appendChild(listItem);
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            nameCell.textContent = match.Name;
+            const relatedIdCell = document.createElement('td');
+            relatedIdCell.textContent = match.RelatedID;
+            const targetIdCell = document.createElement('td');
+            targetIdCell.textContent = match.TargetID;
+            const idCell = document.createElement('td');
+            idCell.textContent = match.ID;
+
+            row.appendChild(nameCell);
+            row.appendChild(relatedIdCell);
+            row.appendChild(targetIdCell);
+            row.appendChild(idCell);
+
+            matchesBody.appendChild(row);
         });
     }
 }
     </script>
 </body>
 </html>
-

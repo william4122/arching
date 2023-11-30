@@ -68,15 +68,24 @@ function matchJson() {
         return;
     }
 
-    const file1Data = JSON.parse(file1Input.value);
-    const file2Data = JSON.parse(file2Input.value);
+    try {
+        // Debugging: Log the input values before parsing
+        console.log('File 1 content:', file1Input.value);
+        console.log('File 2 content:', file2Input.value);
 
-    // Debugging: Log the parsed data
-    console.log('file1Data:', file1Data);
-    console.log('file2Data:', file2Data);
+        const file1Data = JSON.parse(file1Input.value);
+        const file2Data = JSON.parse(file2Input.value);
 
-    // Perform matching logic
-    matchAndDisplay(file1Data, file2Data);
+        // Debugging: Log the parsed data
+        console.log('file1Data:', file1Data);
+        console.log('file2Data:', file2Data);
+
+        // Perform matching logic
+        matchAndDisplay(file1Data, file2Data);
+    } catch (error) {
+        console.error('Error parsing JSON:', error);
+        alert('Error parsing JSON. Please check your input.');
+    }
 }
 function matchAndDisplay(file1Data, file2Data) {
     // Your existing matching and display logic

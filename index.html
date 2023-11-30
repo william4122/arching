@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Matching</title>
+</head>
+<body>
+    <h1>JSON Matching Tool</h1>
+
+    <div>
+        <label for="file1">File 1:</label>
+        <input type="file" id="file1" accept=".json">
+    </div>
+
+    <div>
+        <label for="file2">File 2:</label>
+        <input type="file" id="file2" accept=".json">
+    </div>
+
+    <button onclick="matchJson()">Match JSON</button>
+
+    <h2>Matches:</h2>
+    <ul id="matches"></ul>
+
+    <script>
+        function matchJson() {
+            const file1Input = document.getElementById('file1');
+            const file2Input = document.getElementById('file2');
+            const matchesList = document.getElementById('matches');
+
+            // Check if files are selected
+            if (!file1Input.files[0] || !file2Input.files[0]) {
+                alert('Please select both JSON files');
+                return;
+            }
+
+            const file1Reader = new FileReader();
+            const file2Reader = new FileReader();
+
+            // Read file 1
+            file1Reader.onload = function (e) {
+                const file1Data = JSON.parse(e.target.result);
+
+                // Read file 2
+                file2Reader.onload = function (e) {
+                    const file2Data = JSON.parse(e.target.result);
+
+                    // Perform matching logic
+                    matchAndDisplay(file1Data, file2Data);
+                };
+
+                file2Reader.readAsText(file2Input.files[0]);
+            };
+
+            file1Reader.readAsText(file1Input.files[0]);
+        }
+
+        function matchAndDisplay(file1Data, file2Data) {
+            // Matching logic
+            const matches = [];
+
+            for (const entry2 of file2Data) {
+                const targetId = entry2.body.targetId;
+                const matchingEntry = file1Data.find(entry1 => entry1.id === targetId);
+
+                if (matchingEntry) {
+                    matches.push({
+                        Name: matchingEntry.name,
+                        RelatedID: entry2.relatedId,
+                        TargetID: targetId,
+                        ID: entry2.id
+                    });
+                }
+            }
+
+            // Display matches
+            displayMatches(matches);
+        }
+
+        function displayMatches(matches) {
+            const matchesList = document.getElementById('matches');
+            matchesList.innerHTML = '';
+
+            if (matches.length === 0) {
+                matchesList.innerHTML = '<li>No matches found.</li>';
+            } else {
+                matches.forEach(match => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Name: ${match.Name}, RelatedID: ${match.RelatedID}, TargetID: ${match.TargetID}, ID: ${match.ID}`;
+                    matchesList.appendChild(listItem);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

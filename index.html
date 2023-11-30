@@ -20,14 +20,29 @@
         <input type="file" id="file2" accept=".json">
     </div>
 
-    <button onclick="matchJson()">Match JSON</button>
+    <!-- Update the onclick to call matchAndDisplay -->
+    <button onclick="matchAndDisplay()">Match JSON</button>
 
     <h2>Matches:</h2>
     <ul id="matches"></ul>
 
     <!-- The rest of your JavaScript code can remain in the HTML file -->
     <script>
-        // ... (Your existing JavaScript code)
+        // Your existing JavaScript code
+        function displayMatches(matches) {
+            const matchesList = document.getElementById('matches');
+            matchesList.innerHTML = '';
+
+            if (matches.length === 0) {
+                matchesList.innerHTML = '<li>No matches found.</li>';
+            } else {
+                matches.forEach(match => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Name: ${match.Name}, RelatedID: ${match.RelatedID}, TargetID: ${match.TargetID}, ID: ${match.ID}`;
+                    matchesList.appendChild(listItem);
+                });
+            }
+        }
     </script>
 </body>
 </html>

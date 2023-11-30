@@ -1,29 +1,31 @@
-function matchAndDisplay(file1Data, file2Data) {
-    const matches = [];
+// script.js
+function matchAndDisplay() {
+    const file1Input = document.getElementById('file1');
+    const file2Input = document.getElementById('file2');
 
-    for (const entry2 of file2Data) {
-        // Check if 'body' is defined and has a 'targetId' property
-        if (entry2.body && entry2.body.targetId) {
-            const targetId = entry2.body.targetId;
-
-            // Find matching entry in file1 based on targetId
-            const matchingEntry = file1Data.find(entry1 => entry1.id === targetId);
-
-            if (matchingEntry) {
-                // Check if 'name' property is present in matchingEntry
-                const name = matchingEntry.name || 'N/A';
-
-                // Display matches
-                matches.push({
-                    Name: name,
-                    RelatedID: entry2.relatedId || 'N/A',
-                    TargetID: targetId,
-                    ID: entry2.id || 'N/A'
-                });
-            }
-        }
+    // Check if files are selected
+    if (!file1Input.files[0] || !file2Input.files[0]) {
+        alert('Please select both JSON files');
+        return;
     }
 
-    // Display matches
-    displayMatches(matches);
+    const file1Reader = new FileReader();
+    const file2Reader = new FileReader();
+
+    // Read file 1
+    file1Reader.onload = function (e) {
+        const file1Data = JSON.parse(e.target.result);
+
+        // Read file 2
+        file2Reader.onload = function (e) {
+            const file2Data = JSON.parse(e.target.result);
+
+            // Perform matching logic
+            matchAndDisplay(file1Data, file2Data);
+        };
+
+        file2Reader.readAsText(file2Input.files[0]);
+    };
+
+    file1Reader.readAsText(file1Input.files[0]);
 }

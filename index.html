@@ -41,6 +41,7 @@
     <script>
         // Your existing JavaScript code
 // script.js
+// Inside matchJson function
 function matchJson() {
     const file1Input = document.getElementById('file1');
     const file2Input = document.getElementById('file2');
@@ -53,6 +54,10 @@ function matchJson() {
 
     const file1Data = JSON.parse(file1Input.value);
     const file2Data = JSON.parse(file2Input.value);
+
+    // Debugging: Log the parsed data
+    console.log('file1Data:', file1Data);
+    console.log('file2Data:', file2Data);
 
     // Perform matching logic
     matchAndDisplay(file1Data, file2Data);

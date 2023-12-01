@@ -203,13 +203,9 @@
                     matchesBody.appendChild(row);
                 });
             }
+    // Initialize DataTables after the matches are displayed
+    $('#matches').DataTable();
         }
-
-        // Initialize DataTables after the DOM is fully loaded
-        document.addEventListener("DOMContentLoaded", function () {
-            // Initialize DataTables
-            $('#matches').DataTable();
-        });
     </script>
 </body>
 </html>

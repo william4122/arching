@@ -4,6 +4,8 @@
     <title>RK-Restoration</title>
     <!-- Reference your external JavaScript file here -->
     <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -85,7 +87,7 @@
     </style>
 </head>
 <body>
-    <h1>JSON Matching Tool</h1>
+    <h1>EDR Reg Key Restoration</h1>
 
     <main>
         <label for="file1">Targets:</label>
@@ -97,7 +99,8 @@
         <button onclick="matchJson()">Match JSON</button>
 
         <h2>Matches:</h2>
-        <table id="matches">
+        <!-- Update your table tag as follows -->
+        <table id="matches" class="dataTable">
             <thead>
                 <tr>
                     <th>Location Name</th>
@@ -202,5 +205,12 @@
             }
         }
     </script>
+<!-- Add this script tag to the end of your body section -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize DataTables
+        $('#matches').DataTable();
+    });
+</script>
 </body>
 </html>

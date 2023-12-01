@@ -55,56 +55,11 @@
         <tbody id="matchesBody"></tbody>
     </table>
 
-<!-- Dynamic API Request Section -->
-<div>
-    <h2>Dynamic API Request:</h2>
-    <label for="variable">Variable:</label>
-    <input type="text" id="variable" placeholder="Enter variable">
-
-    <label for="accessToken">Access Token:</label>
-    <input type="text" id="accessToken" placeholder="Enter Access Token">
-
-    <button onclick="makeDynamicApiRequest()">Make Dynamic API Request</button>
-</div>
-
     <!-- The rest of your JavaScript code can remain in the HTML file -->
     <script>
         // Your existing JavaScript code
         // script.js
 
-        // New function for dynamic API request
-        // New function for dynamic API request
-        function makeDynamicApiRequest() {
-            // Get values from input fields
-            const variable = document.getElementById('variable').value.trim();
-            const accessToken = document.getElementById('accessToken').value.trim();
-
-            // Check if the input values are not empty
-            if (!variable || !accessToken) {
-                alert('Please enter Variable and Access Token');
-                return;
-            }
-
-            // Build the full API URL with the provided inputs
-            const fullApiUrl = `https://${variable}.infocyte.com/api/Targets?access_token=${accessToken}`;
-
-            // Make the API request
-            fetch(fullApiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Process the API response here
-                    console.log('Dynamic API Data:', data);
-                })
-                .catch(error => {
-                    console.error('Error fetching Dynamic API data:', error);
-                });
-        }
-        
         // Existing function for matching logic
         function matchJson() {
             const file1Input = document.getElementById('file1');

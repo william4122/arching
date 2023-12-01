@@ -74,35 +74,35 @@
 
         // New function for dynamic API request
         function makeDynamicApiRequest() {
-            // Get values from input fields
-            const apiUrl = document.getElementById('apiUrl').value.trim();
-            const accessToken = document.getElementById('accessToken').value.trim();
+    // Get values from input fields
+    const apiUrl = document.getElementById('apiUrl').value.trim();
+    const accessToken = document.getElementById('accessToken').value.trim();
 
-            // Check if the input values are not empty
-            if (!apiUrl || !accessToken) {
-                alert('Please enter API URL and Access Token');
-                return;
+    // Check if the input values are not empty
+    if (!apiUrl || !accessToken) {
+        alert('Please enter API URL and Access Token');
+        return;
+    }
+
+    // Build the full API URL with the provided inputs
+    const fullApiUrl = `${apiUrl}/api/Targets?access_token=${accessToken}`;
+
+    // Make the API request
+    fetch(fullApiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            // Build the full API URL with the provided inputs
-            const fullApiUrl = `${apiUrl}/api/Targets?access_token=${accessToken}`;
-
-            // Make the API request
-            fetch(fullApiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Process the API response here
-                    console.log('Dynamic API Data:', data);
-                })
-                .catch(error => {
-                    console.error('Error fetching Dynamic API data:', error);
-                });
-        }
+            return response.json();
+        })
+        .then(data => {
+            // Process the API response here
+            console.log('Dynamic API Data:', data);
+        })
+        .catch(error => {
+            console.error('Error fetching Dynamic API data:', error);
+        });
+}
         
         // Existing function for matching logic
         function matchJson() {

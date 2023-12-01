@@ -23,6 +23,8 @@
             background-color: #f2f2f2;
         }
     </style>
+    <!-- Link to your custom favicon -->
+    <link rel="shortcut icon" href="favicon.ico" /> 
 </head>
 <body>
     <h1>JSON Matching Tool</h1>
@@ -53,94 +55,54 @@
         <tbody id="matchesBody"></tbody>
     </table>
 
+    <!-- Dynamic API Request Section -->
+    <div>
+        <h2>Dynamic API Request:</h2>
+        <label for="apiUrl">API URL:</label>
+        <input type="text" id="apiUrl" placeholder="Enter API URL">
+
+        <label for="accessToken">Access Token:</label>
+        <input type="text" id="accessToken" placeholder="Enter Access Token">
+
+        <button onclick="makeDynamicApiRequest()">Make Dynamic API Request</button>
+    </div>
+
     <!-- The rest of your JavaScript code can remain in the HTML file -->
     <script>
         // Your existing JavaScript code
-// script.js
-// Inside matchJson function
-function matchJson() {
-    const file1Input = document.getElementById('file1');
-    const file2Input = document.getElementById('file2');
+        // script.js
 
-    // Check if textareas are not empty
-    if (!file1Input.value.trim() || !file2Input.value.trim()) {
-        alert('Please paste JSON into both boxes');
-        return;
-    }
+        // New function for dynamic API request
+        function makeDynamicApiRequest() {
+            // Get values from input fields
+            const apiUrl = document.getElementById('apiUrl').value.trim();
+            const accessToken = document.getElementById('accessToken').value.trim();
 
-    try {
-        // Debugging: Log the input values before parsing
-        console.log('File 1 content:', file1Input.value);
-        console.log('File 2 content:', file2Input.value);
-
-        const file1Data = JSON.parse(file1Input.value);
-        const file2Data = JSON.parse(file2Input.value);
-
-        // Debugging: Log the parsed data
-        console.log('file1Data:', file1Data);
-        console.log('file2Data:', file2Data);
-
-        // Perform matching logic
-        matchAndDisplay(file1Data, file2Data);
-    } catch (error) {
-        console.error('Error parsing JSON:', error);
-        alert('Error parsing JSON. Please check your input.');
-    }
-}
-function matchAndDisplay(file1Data, file2Data) {
-    // Your existing matching and display logic
-    const matches = [];
-
-    for (const entry2 of file2Data) {
-        if (entry2.body && entry2.body.targetId) {
-            const targetId = entry2.body.targetId;
-
-            // Updated matching logic to handle both structures in file1Data
-            const matchingEntry = file1Data.find(entry1 => entry1.id === targetId || entry1.targetId === targetId);
-
-            if (matchingEntry) {
-                const name = matchingEntry.name || 'N/A';
-                matches.push({
-                    Name: name,
-                    RelatedID: entry2.relatedId || 'N/A',
-                    TargetID: targetId
-                });
+            // Check if the input values are not empty
+            if (!apiUrl || !accessToken) {
+                alert('Please enter API URL and Access Token');
+                return;
             }
+
+            // Build the full API URL with the provided inputs
+            const fullApiUrl = `${apiUrl}/api/Targets?access_token=${accessToken}`;
+
+            // Make the API request
+            fetch(fullApiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Process the API response here
+                    console.log('Dynamic API Data:', data);
+                })
+                .catch(error => {
+                    console.error('Error fetching Dynamic API data:', error);
+                });
         }
-    }
-
-    // Display matches as a table
-    displayMatches(matches);
-}
-function displayMatches(matches) {
-    const matchesBody = document.getElementById('matchesBody');
-    matchesBody.innerHTML = '';
-
-    if (matches.length === 0) {
-        const noMatchesRow = document.createElement('tr');
-        const noMatchesCell = document.createElement('td');
-        noMatchesCell.textContent = 'No matches found.';
-        noMatchesCell.colSpan = 3; // Span across all columns
-        noMatchesRow.appendChild(noMatchesCell);
-        matchesBody.appendChild(noMatchesRow);
-    } else {
-        matches.forEach(match => {
-            const row = document.createElement('tr');
-            const nameCell = document.createElement('td');
-            nameCell.textContent = match.Name;
-            const relatedIdCell = document.createElement('td');
-            relatedIdCell.textContent = match.RelatedID;
-            const targetIdCell = document.createElement('td');
-            targetIdCell.textContent = match.TargetID;
-
-            row.appendChild(nameCell);
-            row.appendChild(relatedIdCell);
-            row.appendChild(targetIdCell);
-
-            matchesBody.appendChild(row);
-        });
-    }
-}
     </script>
 </body>
 </html>

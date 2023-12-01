@@ -4,9 +4,11 @@
     <title>RK-Restoration</title>
     <!-- Reference your external JavaScript file here -->
     <script src="script.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <style>
+        /* Your existing styles remain unchanged */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -112,7 +114,6 @@
         </table>
     </main>
 
-
     <!-- The rest of your JavaScript code can remain in the HTML file -->
     <script>
         // Your existing JavaScript code
@@ -150,33 +151,32 @@
         }
 
         function matchAndDisplay(file1Data, file2Data) {
-            // Your existing matching and display logic
-            const matches = [];
+        // Your existing matching and display logic
+        const matches = [];
 
-            for (const entry2 of file2Data) {
-                if (entry2.body && entry2.body.targetId) {
-                    const targetId = entry2.body.targetId;
+for (const entry2 of file2Data) {
+    if (entry2.body && entry2.body.targetId) {
+        const targetId = entry2.body.targetId;
 
-                    // Updated matching logic to handle both structures in file1Data
-                    const matchingEntry = file1Data.find(entry1 => entry1.id === targetId || entry1.targetId === targetId);
+        // Updated matching logic to handle both structures in file1Data
+        const matchingEntry = file1Data.find(entry1 => entry1.id === targetId || entry1.targetId === targetId);
 
-                    if (matchingEntry) {
-                        const name = matchingEntry.name || 'N/A';
-                        matches.push({
-                            Name: name,
-                            RelatedID: entry2.relatedId || 'N/A',
-                            TargetID: targetId
-                        });
-                    }
-                }
-            }
-
-            // Display matches as a table
-            displayMatches(matches);
+        if (matchingEntry) {
+            const name = matchingEntry.name || 'N/A';
+            matches.push({
+                Name: name,
+                RelatedID: entry2.relatedId || 'N/A',
+                TargetID: targetId
+            });
         }
-
+    }
+}
+// Display matches as a table
+displayMatches(matches);
+        }
         function displayMatches(matches) {
-            const matchesBody = document.getElementById('matchesBody');
+ const matchesBody = document.getElementById('matchesBody');
+            // Your existing displayMatches function remains unchanged
             matchesBody.innerHTML = '';
 
             if (matches.length === 0) {
@@ -203,14 +203,14 @@
                     matchesBody.appendChild(row);
                 });
             }
+         }
+         }
         }
+        // Initialize DataTables after the DOM is fully loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize DataTables
+            $('#matches').DataTable();
+        });
     </script>
-<!-- Add this script tag to the end of your body section -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Initialize DataTables
-        $('#matches').DataTable();
-    });
-</script>
 </body>
 </html>
